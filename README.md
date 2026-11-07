@@ -129,4 +129,50 @@ For deployment using Render:
 1. Push the project to GitHub.
 2. Create a PostgreSQL database.
 3. Create a new Web Service in Render.
-4. Connect
+4. Connect the CareBridge GitHub repository.
+5. Set the build command to `npm install`.
+6. Set the start command to `npm start`.
+7. Configure the required environment variables.
+8. Deploy and test the application.
+
+Create the initial staff account using the host's shell or one-off job with the required environment variables, then run `npm run create-staff`.
+
+Do not deploy this project as a static GitHub Pages website because its backend and Socket.IO functionality require a running server.
+
+## Project Limitations
+
+CareBridge is a hackathon demonstration and is not a certified medical or emergency service.
+
+- AI responses must not replace professional medical advice.
+- Only fictional demo information should be used for testing.
+- Current memory filtering is basic and needs stronger privacy controls before real-world use.
+- Production deployment requires additional security reviews, role-based access controls, audit logs, monitoring, backups, and data-retention policies.
+- Queue management is a demonstration workflow and does not provide clinically validated triage.
+
+## Future Enhancements
+
+- Voice-based patient assistance.
+- SMS and email notifications.
+- Advanced patient memory and privacy controls.
+- Hospital-specific staff roles and permissions.
+- Multi-hospital support.
+- Doctor appointment and scheduling integration.
+- Improved analytics and queue management.
+
+## Team Members
+
+| Team Member | Role |
+|---|---|
+| M. V. Padmavathi | Team Lead & Backend Development |
+| M. Jahnavi | Backend Development |
+| N. Tirumalesh | Testing & Quality Assurance |
+
+## GitHub Repository
+
+[CareBridge – GitHub](https://github.com/janu1534/CareBridge)
+
+## Project Goal
+
+Our goal is to transform hospital customer support through conversational AI and long-term memory, making healthcare assistance more accessible, efficient, and personalized.
+
+**CareBridge – Remembering Patients, Improving Care.**
