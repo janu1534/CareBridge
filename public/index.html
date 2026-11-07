@@ -1,0 +1,104 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CareBridge | Connected Care</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="brand-icon">✚</span>
+    <span>CareBridge</span>
+  </a>
+  <span class="tagline">CONNECTED CARE, LESS WAITING</span>
+</header>
+
+<main class="landing">
+
+  <section class="robot-section">
+    <div class="robot-glow"></div>
+    <div class="robot-image">
+      <img src="/images/carebot.png"
+           alt="CareBridge friendly medical robot"
+           onerror="this.style.display='none';document.getElementById('robot-fallback').hidden=false">
+      <div id="robot-fallback" hidden>
+        <div class="robot-face">🤖</div>
+        <p>Meet CareBot!</p>
+      </div>
+    </div>
+    <div class="speech">
+      <span class="online-dot"></span>
+      Hello! I'm CareBot. How can I help you today?
+    </div>
+    <p class="robot-caption">YOUR FRIENDLY HEALTHCARE COMPANION</p>
+  </section>
+
+  <section class="content">
+    <div class="welcome-label">WELCOME TO CAREBRIDGE</div>
+
+    <h1>Your Hospital Journey,<br>
+      <span>Made Simpler.</span>
+    </h1>
+
+    <p class="intro">
+      Smarter healthcare starts here. Choose your portal
+      and let us make your hospital experience easier.
+    </p>
+
+    <div class="portal-grid">
+
+      <a href="/patient.html" class="portal-card patient">
+        <div class="portal-icon">♙</div>
+        <div>
+          <h2>Patient Portal</h2>
+          <p>Register, get your token and track your queue.</p>
+          <span class="portal-link">Continue →</span>
+        </div>
+      </a>
+
+      <a href="/staff.html" class="portal-card staff">
+        <div class="portal-icon">✚</div>
+        <div>
+          <h2>Staff Portal</h2>
+          <p>Manage patients and update live queues.</p>
+          <span class="portal-link">Staff login →</span>
+        </div>
+      </a>
+
+      <a href="/critical-care.html" class="portal-card critical">
+        <div class="portal-icon">♡</div>
+        <div>
+          <h2>Critical Care</h2>
+          <p>Monitor urgency and prioritize patient care.</p>
+          <span class="portal-link">Open portal →</span>
+        </div>
+      </a>
+
+      <a href="/assistant.html" class="portal-card assistant">
+        <div class="portal-icon">✧</div>
+        <div>
+          <h2>AI Assistant</h2>
+          <p>Talk to CareBot for friendly hospital guidance.</p>
+          <span class="portal-link">Meet CareBot →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="bottom-note">
+      <span>♡</span> Connected care, with compassion.
+    </div>
+  </section>
+</main>
+
+<footer>
+  CareBridge © 2026 · Connected Care, Less Waiting
+  <p>Demonstration platform. Not for medical emergencies.</p>
+</footer>
+
+</body>
+</html>

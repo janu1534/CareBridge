@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareBridge | Critical Care</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="/critical-care.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo">Care<span>Bridge</span></a>
+    <a href="/" class="back-link">← Back to Home</a>
+  </header>
+
+  <main class="portal-page">
+    <section class="panel">
+      <p class="eyebrow">URGENT RESPONSE CENTER</p>
+      <h1>Critical Care Dashboard</h1>
+      <p>Monitor patient urgency and support priority-based care.</p>
+
+      <div class="critical-summary">
+        <article class="priority-card high">
+          <span>HIGH PRIORITY</span>
+          <strong id="high-count">0</strong>
+          <small>Urgent attention</small>
+        </article>
+        <article class="priority-card medium">
+          <span>MEDIUM PRIORITY</span>
+          <strong id="medium-count">0</strong>
+          <small>Needs assessment</small>
+        </article>
+        <article class="priority-card low">
+          <span>LOW PRIORITY</span>
+          <strong id="low-count">0</strong>
+          <small>Routine attention</small>
+        </article>
+      </div>
+
+      <h2>Patient urgency queue</h2>
+      <p class="notice">
+        Demonstration interface. Use fictional patient data only.
+        This dashboard does not make clinical decisions.
+      </p>
+
+      <div id="critical-queue">
+        <p class="muted">Waiting for patient queue data...</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

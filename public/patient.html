@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CareBridge intelligent patient support portal">
+  <title>CareBridge | Patient Support</title>
+  <link rel="stylesheet" href="patient.css">
+  <script src="patient.js" defer></script>
+<script src="assistant.js" defer></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="logo" href="patient.html">
+      Care<span>Bridge</span>
+    </a>
+    <span class="portal-label">PATIENT SUPPORT PORTAL</span>
+  </header>
+
+  <main class="container">
+
+    <!-- Patient identity selection -->
+    <section id="login-section" class="login-card">
+      <div class="welcome-icon">♡</div>
+      <p class="eyebrow">WELCOME TO CAREBRIDGE</p>
+      <h1>Your healthcare support, <span>simplified.</span></h1>
+      <p class="description">
+        Connect with your intelligent patient support assistant
+        and access your support history.
+      </p>
+
+      <form id="patient-login-form">
+        <label for="patient-select">Choose a demo patient identity</label>
+        <select id="patient-select" required>
+          <option value="">Select a demo identity</option>
+          <option value="demo-patient-1">Demo Patient 1</option>
+          <option value="demo-patient-2">Demo Patient 2</option>
+        </select>
+
+        <p class="notice">
+          Development demo only. This selection does not authenticate
+          a real patient or retrieve medical records.
+        </p>
+
+        <button type="submit">Enter Patient Portal</button>
+      </form>
+    </section>
+
+    <!-- Patient dashboard -->
+    <section id="dashboard" hidden>
+
+      <div class="welcome-row">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL SUPPORT SPACE</p>
+          <h1>Hello, <span id="patient-name">Patient</span></h1>
+          <p class="description">
+            How can CareBridge help you today?
+          </p>
+        </div>
+
+        <button id="logout-button" class="secondary-button">
+          Switch identity
+        </button>
+      </div>
+
+      <div class="dashboard-grid">
+
+        <!-- AI Chat -->
+        <section class="card chat-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">INTELLIGENT SUPPORT</p>
+              <h2>CareBridge Assistant</h2>
+            </div>
+            <span class="status-badge">UI PREVIEW</span>
+          </div>
+
+          <div id="chat-messages" class="chat-messages"
+               aria-live="polite">
+            <div class="message assistant-message">
+              <strong>CareBridge Assistant</strong>
+              <p>
+                Welcome! The chat interface is ready.
+                AI services are not connected yet.
+              </p>
+            </div>
+          </div>
+
+          <form id="chat-form">
+            <label for="chat-input">Your message</label>
+            <div class="chat-input-row">
+<input
+  id="chat-input"
+  type="text"
+  placeholder="Type your message here..."
+  required
+>
+<button type="submit" id="send-button">Send</button>
+            </div>
+          </form>
+
+          <p class="notice">
+            Temporary UI preview. No fake AI responses are generated.
+          </p>
+        </section>
+<!-- Patient memory -->
+<section class="card">
+  <p class="eyebrow">PERSONALISED SUPPORT</p>
+  <h2>Remembered Information</h2>
+  <div class="memory-placeholder">
+    <div class="memory-icon">✧</div>
+    <h3>Conversation Memory</h3>
+    <p id="patient-memory">
+      CareBot uses saved conversation history to remember previous messages.
+    </p>
+    <span class="status-badge">POSTGRESQL</span>
+  </div>
+</section>
+
+<!-- Conversation history -->
+<section class="card">
+  <p class="eyebrow">YOUR PAST INTERACTIONS</p>
+  <h2>Conversation History</h2>
+  <div id="conversation-history" class="empty-state">
+    <p>Loading your conversation history...</p>
+  </div>
+</section>
+
+<!-- Memory usage -->
+<section class="card">
+  <p class="eyebrow">MEMORY INTELLIGENCE</p>
+  <h2>Personalisation Activity</h2>
+  <div class="memory-placeholder">
+    <div class="memory-icon">◎</div>
+    <h3>Previous support history</h3>
+    <p id="memory-activity">
+      Saved messages are retrieved to provide conversational context.
+    </p>
+    <span class="status-badge">ACTIVE</span>
+  </div>
+</section>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      CareBridge – Intelligent Patient Support Agent
+    </p>
+    <p>
+      Demonstration interface only. Not for medical emergencies
+      or medical diagnosis.
+    </p>
+  </footer>
+
+</body>
+</html>

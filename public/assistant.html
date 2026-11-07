@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareBridge | AI Assistant</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/assistant.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo">Care<span>Bridge</span></a>
+    <a href="/" class="back-link">← Back to Home</a>
+  </header>
+
+  <main class="portal-page assistant-layout">
+    <section class="panel assistant-intro">
+      <p class="eyebrow">YOUR HEALTHCARE COMPANION</p>
+      <h1>Meet CareBot</h1>
+      <img
+        src="/images/carebot.png"
+        alt="CareBot friendly medical robot"
+        class="assistant-robot"
+      >
+      <h2>Hello! How can I help you today?</h2>
+      <p>
+        I can help explain general health information, guide you through
+        CareBridge, and answer questions about hospital services.
+      </p>
+      <p class="notice">
+        CareBot is an AI demonstration, not a doctor. It cannot diagnose
+        emergencies or replace professional medical advice.
+      </p>
+    </section>
+
+    <section class="panel assistant-chat">
+      <h2>Chat with CareBot</h2>
+      <div id="chat-messages" aria-live="polite">
+        <p class="bot-message">
+          CareBot: Welcome! What would you like help with?
+        </p>
+      </div>
+
+      <form id="chat-form">
+        <label for="chat-input">Your message</label>
+        <textarea
+          id="chat-input"
+          rows="3"
+          placeholder="Type your question..."
+          required
+        ></textarea>
+        <button type="submit" id="send-button">Send message</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

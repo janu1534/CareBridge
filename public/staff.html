@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareBridge | Staff Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+
+<body class="staff-page">
+
+<header class="site-header">
+  <a href="/" class="logo">Care<span>Bridge</span></a>
+  <div class="header-actions">
+    <span id="connection-state">Connecting...</span>
+    <a href="/" class="back-link">Home</a>
+  </div>
+</header>
+
+<main class="staff-container">
+
+  <!-- Login -->
+  <section class="panel" id="login-section">
+    <p class="eyebrow">CAREBRIDGE STAFF</p>
+    <h1>Welcome back</h1>
+    <p>Sign in to manage hospital operations.</p>
+
+    <form id="login-form">
+      <label for="staff-email">Email address</label>
+      <input id="staff-email" type="email"
+        required placeholder="staff@hospital.com">
+
+      <label for="staff-password">Password</label>
+      <input id="staff-password" type="password"
+        required placeholder="Enter your password">
+
+      <button type="submit">Sign in to dashboard</button>
+      <p id="login-message" role="status"></p>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="staff-area" hidden>
+
+    <div class="staff-heading">
+      <div>
+        <p class="eyebrow">HOSPITAL OPERATIONS</p>
+        <h1>Staff Dashboard</h1>
+        <p id="staff-welcome">Welcome back</p>
+      </div>
+
+      <button id="logout-button" class="secondary"
+        type="button">Sign out</button>
+    </div>
+
+    <!-- Statistics -->
+    <div class="staff-stats">
+
+      <article class="stat-card">
+        <span>Total patients</span>
+        <strong id="total-count">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Waiting</span>
+        <strong id="waiting-count">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Currently serving</span>
+        <strong id="serving-count">0</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Completed</span>
+        <strong id="completed-count">0</strong>
+      </article>
+
+    </div>
+
+    <!-- Patient Queue -->
+    <section class="panel queue-panel">
+
+      <div class="queue-heading">
+        <div>
+          <p class="eyebrow">LIVE HOSPITAL QUEUE</p>
+          <h2>Patient Queue</h2>
+          <p>Monitor and update patient progress.</p>
+        </div>
+        <span class="live-indicator">● LIVE</span>
+      </div>
+
+      <div class="queue-tools">
+        <input id="queue-search" type="search"
+          placeholder="Search patient or token...">
+
+        <select id="department-filter">
+          <option value="">All departments</option>
+        </select>
+
+        <select id="status-filter">
+          <option value="">All statuses</option>
+          <option value="waiting">Waiting</option>
+          <option value="serving">Serving</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div id="staff-queue">
+        <p class="muted">Loading patient queue...</p>
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+</body>
+</html>
