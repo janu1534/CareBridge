@@ -1,51 +1,132 @@
-# CareBridge custom backend (live queue prototype)
+# CareBridge – AI-Powered Hospital Customer Support Agent
 
-## Stack
-Node.js/Express API, Socket.IO live updates, PostgreSQL persistence, bcrypt password hashes, PostgreSQL-backed sessions.
+**CareBridge** is an AI-powered hospital customer support platform designed to make patient assistance faster, smarter, and more personalized.
 
-## Accounts/integrations needed
-- GitHub: store code and connect deployment.
-- Node.js LTS: local development (https://nodejs.org/en/download/).
-- PostgreSQL: local or managed database.
-- Render or another Node.js host that supports WebSockets and persistent processes.
-- Optional later: SMS/email provider, maps API, push notification service. Not integrated in this starter.
+It combines a multilingual AI chatbot, long-term conversational memory using Hindsight, patient registration, real-time queue management, and a staff dashboard.
 
-## Run locally
-1. Install Node.js and PostgreSQL; create database `carebridge`.
-2. Copy `.env.example` to `.env`, then fill `DATABASE_URL` and a long unique `SESSION_SECRET`. Never commit `.env`.
-3. If the DB host requires TLS, set `PGSSL=true`.
-4. Add `STAFF_EMAIL`, `STAFF_PASSWORD` (12+ characters), and `STAFF_ROLE=admin` to `.env` temporarily/per your local development setup.
-5. Run:
-   ```
-   npm install
-   npm run create-staff
-   npm start
-   ```
-6. Visit http://localhost:3000. Register a fictional patient, sign in as staff, and change status.
-7. Open another browser/device to see live updates.
+Our goal is to reduce repetitive questions, improve hospital communication, and provide patients with a smoother support experience.
 
-## Deploy to Render
-1. Push this folder to GitHub; exclude `.env`, passwords, and database secrets.
-2. Provision PostgreSQL with your chosen provider and copy its connection string.
-3. Render dashboard → New → Web Service → connect repository.
-4. Build command: `npm install`; Start command: `npm start`.
-5. Set environment variables in the host dashboard: `NODE_ENV=production`, `DATABASE_URL`, `SESSION_SECRET`, and `PGSSL=true` if required.
-6. Deploy and check `https://YOUR-SERVICE/api/health`.
-7. Create the initial staff user using the host's one-off shell/job: set `STAFF_EMAIL`, `STAFF_PASSWORD`, `STAFF_ROLE=admin`, then run `npm run create-staff`. Do not put credentials in source code or public logs.
-8. Test on two devices using fictional data.
+## Key Features
 
-Do not publish this as a GitHub Pages static site: Socket.IO and the API require a running server. Use a Node Web Service. Free web services may sleep after inactivity.
+- **AI Customer Support – CareBot:** Provides friendly, hospital-related assistance using Groq-powered AI.
+- **Multilingual Support:** Communicates in English and Telugu.
+- **Long-Term Memory – Hindsight:** Remembers relevant patient preferences across conversations, reducing the need to repeat information.
+- **Patient-Specific Memory:** Uses separate memory banks for individual demo patients.
+- **Chat History:** Maintains conversation history for continuity.
+- **Patient Registration:** Allows patients to register and receive queue tokens.
+- **Live Queue Management:** Provides real-time queue updates using Socket.IO.
+- **Staff Dashboard:** Enables authorized staff to monitor and update patient queue statuses.
+- **Secure Authentication:** Uses bcrypt password hashing and PostgreSQL-backed sessions.
 
-## Endpoints
-- GET `/api/health`
-- GET `/api/queue` (tokens/status only)
-- POST `/api/patients`
-- POST `/api/staff/login`
-- POST `/api/staff/logout`
-- GET `/api/staff/me`
-- GET `/api/staff/queue` (staff only)
-- PATCH `/api/staff/queue/:id` (staff only)
-- Socket.IO event `queue:update`
+## Technology Stack
 
-## Limitations / before real hospital use
-Demo only; not a certified medical or emergency system. Patient registration is public, token numbers are demo tokens (not guaranteed sequential), and all logged-in staff can change statuses. No role-specific permissions, hospital separation, validated triage, doctor-roster matching, cross-hospital coordination, audit logs, notification integrations, driver tracking, retention policy, backups, or disaster recovery. Before real patient data: add strict role/hospital authorization, CSRF protection, audit logs, input/security review, monitoring, backups, retention/deletion controls, privacy/legal review, and clinical workflow validation. Use TLS, keep secrets private, and restrict database network access.
+| Component | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js, Express.js |
+| Database | PostgreSQL |
+| Real-time Communication | Socket.IO |
+| AI Assistant | Groq API |
+| Long-Term Memory | Hindsight |
+| Authentication | bcryptjs, Express Sessions |
+
+## How Hindsight Powers CareBridge
+
+Hindsight provides long-term conversational memory for CareBot.
+
+1. When a patient sends a message, CareBridge retrieves relevant memories from that patient's memory bank.
+2. The retrieved context is provided to the AI assistant.
+3. CareBot generates a personalized response using the available context.
+4. Eligible demo conversation information is retained for future interactions.
+5. Separate memory banks help prevent one demo patient's preferences from being recalled for another.
+
+This demonstrates how an AI customer support agent can remember previous interactions instead of making users repeat the same information.
+
+## System Workflow
+
+1. A patient opens the CareBridge website.
+2. The patient registers or signs in.
+3. The patient interacts with CareBot for hospital-related assistance.
+4. Hindsight retrieves relevant previous preferences when available.
+5. CareBot provides contextual and personalized responses.
+6. The patient can register for the queue and receive a token.
+7. Staff monitor and update queue statuses through the staff dashboard.
+8. Queue updates are reflected in real time.
+
+## Technology Requirements
+
+Before running CareBridge, install:
+
+- Node.js
+- PostgreSQL
+- Groq API credentials
+- Hindsight API credentials
+
+## Installation and Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/janu1534/CareBridge.git
+cd CareBridge
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file using `.env.example` as a template.
+
+Configure the required variables:
+
+```env
+DATABASE_URL=your_database_url
+SESSION_SECRET=your_secure_session_secret
+NODE_ENV=development
+PORT=3000
+GROQ_API_KEY=your_groq_api_key
+HINDSIGHT_API_KEY=your_hindsight_api_key
+HINDSIGHT_BASE_URL=your_hindsight_base_url
+STAFF_EMAIL=your_staff_email
+STAFF_PASSWORD=your_strong_password
+STAFF_ROLE=admin
+```
+
+If your PostgreSQL provider requires SSL, configure:
+
+```env
+PGSSL=true
+```
+
+**Security:** Never upload `.env`, passwords, API keys, or database credentials to GitHub.
+
+### 4. Create the Staff Account
+
+```bash
+npm run create-staff
+```
+
+### 5. Start the Application
+
+```bash
+npm start
+```
+
+Open the application in your browser:
+
+http://localhost:3000
+
+## Deployment
+
+CareBridge requires a Node.js hosting service that supports persistent server processes and WebSockets.
+
+For deployment using Render:
+
+1. Push the project to GitHub.
+2. Create a PostgreSQL database.
+3. Create a new Web Service in Render.
+4. Connect
