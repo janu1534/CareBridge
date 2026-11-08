@@ -2,45 +2,63 @@
 
 **CareBridge** is an AI-powered hospital customer support platform designed to make patient assistance faster, smarter, and more personalized.
 
-It combines a multilingual AI chatbot, long-term conversational memory using Hindsight, patient registration, real-time queue management, and a staff dashboard.
+It combines an AI chatbot, long-term conversational memory using Hindsight, patient registration, real-time queue management, chat history, and a staff dashboard.
 
 Our goal is to reduce repetitive questions, improve hospital communication, and provide patients with a smoother support experience.
+
+## Live Demo
+
+**Live Website:** https://carebridge-6mhz.onrender.com
+
+**Patient Portal:** https://carebridge-6mhz.onrender.com/patient.html
+
+**Staff/Admin Portal:** https://carebridge-6mhz.onrender.com/staff.html
+
+**GitHub Repository:** https://github.com/janu1534/CareBridge
 
 ## Key Features
 
 - **AI Customer Support – CareBot:** Provides friendly, hospital-related assistance using Groq-powered AI.
-- **Multilingual Support:** Communicates in English and Telugu.
-- **Long-Term Memory – Hindsight:** Remembers relevant patient preferences across conversations, reducing the need to repeat information.
+- **Multilingual Interaction:** Supports English and Telugu conversations.
+- **Long-Term Memory – Hindsight:** Retains relevant patient preferences across conversations.
 - **Patient-Specific Memory:** Uses separate memory banks for individual demo patients.
-- **Chat History:** Maintains conversation history for continuity.
+- **Chat History:** Maintains previous conversations for continuity.
 - **Patient Registration:** Allows patients to register and receive queue tokens.
 - **Live Queue Management:** Provides real-time queue updates using Socket.IO.
-- **Staff Dashboard:** Enables authorized staff to monitor and update patient queue statuses.
+- **Staff Dashboard:** Allows authorized staff to monitor and update patient queue statuses.
 - **Secure Authentication:** Uses bcrypt password hashing and PostgreSQL-backed sessions.
 
-## Technology Stack
+## What Makes CareBridge Different?
 
-| Component | Technology |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Node.js, Express.js |
-| Database | PostgreSQL |
-| Real-time Communication | Socket.IO |
-| AI Assistant | Groq API |
-| Long-Term Memory | Hindsight |
-| Authentication | bcryptjs, Express Sessions |
+Traditional customer support systems often require patients to repeat the same information during every interaction.
+
+CareBridge addresses this problem by combining conversational AI with long-term memory.
+
+For example, when a patient tells CareBot that their preferred language is Telugu, Hindsight can retain that preference. In a fresh conversation, CareBot can retrieve the stored preference and respond accordingly.
+
+This makes the interaction more personalized and reduces repetitive communication.
 
 ## How Hindsight Powers CareBridge
 
 Hindsight provides long-term conversational memory for CareBot.
 
-1. When a patient sends a message, CareBridge retrieves relevant memories from that patient's memory bank.
-2. The retrieved context is provided to the AI assistant.
-3. CareBot generates a personalized response using the available context.
-4. Eligible demo conversation information is retained for future interactions.
-5. Separate memory banks help prevent one demo patient's preferences from being recalled for another.
+1. A patient sends a message to CareBot.
+2. CareBridge retrieves relevant memories from that patient's memory bank.
+3. The retrieved context is provided to the AI assistant.
+4. CareBot generates a personalized response using the available context.
+5. Eligible conversation information is retained for future interactions.
+6. Separate memory banks help isolate demo patients' preferences.
 
-This demonstrates how an AI customer support agent can remember previous interactions instead of making users repeat the same information.
+### Memory Demonstration
+
+We tested the following scenario:
+
+- A patient tells CareBot: "My preferred language is Telugu."
+- A fresh conversation is started.
+- The patient asks: "What language do I prefer?"
+- CareBot recalls the preference as Telugu.
+
+This demonstrates the persistent-memory capability of the project.
 
 ## System Workflow
 
@@ -53,9 +71,33 @@ This demonstrates how an AI customer support agent can remember previous interac
 7. Staff monitor and update queue statuses through the staff dashboard.
 8. Queue updates are reflected in real time.
 
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js, Express.js |
+| Database | PostgreSQL |
+| Real-time Communication | Socket.IO |
+| AI Assistant | Groq API |
+| Long-Term Memory | Hindsight |
+| Authentication | bcryptjs, Express Sessions |
+| Deployment | Render |
+
+## Demo Verification
+
+The following project capabilities have been tested during development:
+
+- Live deployed website loads successfully.
+- CareBot responds to patient messages.
+- Telugu-language interaction was demonstrated.
+- Hindsight successfully recalled a patient language preference in a fresh conversation.
+- Patient portal and queue management features are included in the application.
+- Staff login and dashboard access were tested successfully.
+
 ## Technology Requirements
 
-Before running CareBridge, install:
+Before running CareBridge locally, install:
 
 - Node.js
 - PostgreSQL
@@ -118,13 +160,15 @@ npm start
 
 Open the application in your browser:
 
+```text
 http://localhost:3000
+```
 
 ## Deployment
 
-CareBridge requires a Node.js hosting service that supports persistent server processes and WebSockets.
+CareBridge is deployed using Render.
 
-For deployment using Render:
+For a new deployment:
 
 1. Push the project to GitHub.
 2. Create a PostgreSQL database.
@@ -135,9 +179,13 @@ For deployment using Render:
 7. Configure the required environment variables.
 8. Deploy and test the application.
 
-Create the initial staff account using the host's shell or one-off job with the required environment variables, then run `npm run create-staff`.
+Create the initial staff account using the hosting provider's shell or a one-off job with the required environment variables, then run:
 
-Do not deploy this project as a static GitHub Pages website because its backend and Socket.IO functionality require a running server.
+```bash
+npm run create-staff
+```
+
+CareBridge requires a running Node.js server because its backend and Socket.IO functionality cannot run as a static GitHub Pages website.
 
 ## Project Limitations
 
@@ -145,7 +193,7 @@ CareBridge is a hackathon demonstration and is not a certified medical or emerge
 
 - AI responses must not replace professional medical advice.
 - Only fictional demo information should be used for testing.
-- Current memory filtering is basic and needs stronger privacy controls before real-world use.
+- Current memory filtering requires stronger privacy controls before real-world use.
 - Production deployment requires additional security reviews, role-based access controls, audit logs, monitoring, backups, and data-retention policies.
 - Queue management is a demonstration workflow and does not provide clinically validated triage.
 
@@ -166,10 +214,6 @@ CareBridge is a hackathon demonstration and is not a certified medical or emerge
 | M. V. Padmavathi | Team Lead & Backend Development |
 | M. Jahnavi | Backend Development |
 | N. Tirumalesh | Testing & Quality Assurance |
-
-## GitHub Repository
-
-[CareBridge – GitHub](https://github.com/janu1534/CareBridge)
 
 ## Project Goal
 
