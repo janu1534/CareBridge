@@ -7,14 +7,18 @@
   <meta name="description" content="CareBridge intelligent patient support portal">
   <title>CareBridge | Patient Support</title>
   <link rel="stylesheet" href="patient.css">
-  <script src="patient.js" defer></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+<script src="patient.js" defer></script>
 <script src="assistant.js" defer></script>
 </head>
 
 <body>
   <header class="topbar">
-    <a class="logo" href="patient.html">
-      Care<span>Bridge</span>
+   <div class="patient-header">
+  <a class="logo" href="/">CareBridge</a>
+  <a href="/" class="back-home">← Back to Home</a>
+</div>
+   CareBridge</span>
     </a>
     <span class="portal-label">PATIENT SUPPORT PORTAL</span>
   </header>
@@ -33,39 +37,45 @@
 
 <div id="auth-message" class="notice" aria-live="polite"></div>
 
-<form id="patient-register-form">
-  <h2>Create Patient Account</h2>
 
-  <label for="register-name">Full name</label>
-  <input id="register-name" type="text" required minlength="2"
-         maxlength="80" placeholder="Enter your name">
+<div class="auth-grid">
 
-  <label for="register-email">Email address</label>
-  <input id="register-email" type="email" required
-         placeholder="Enter your email">
+  <form id="patient-register-form" class="auth-card">
+    <h2>Create Your Account</h2>
+    <p>New to CareBridge? Register here.</p>
 
-  <label for="register-password">Password</label>
-  <input id="register-password" type="password" required
-         minlength="8" placeholder="At least 8 characters">
+    <label for="register-name">Full name</label>
+    <input id="register-name" type="text" required minlength="2"
+           maxlength="80" placeholder="Enter your name">
 
-  <button type="submit">Create Account</button>
-</form>
+    <label for="register-email">Email address</label>
+    <input id="register-email" type="email" required
+           placeholder="Enter your email">
 
-<hr>
+    <label for="register-password">Password</label>
+    <input id="register-password" type="password" required
+           minlength="8" placeholder="At least 8 characters">
 
-<form id="patient-login-form">
-  <h2>Already Registered? Login</h2>
+    <button type="submit">Create Account</button>
+  </form>
 
-  <label for="login-email">Email address</label>
-  <input id="login-email" type="email" required
-         placeholder="Enter your email">
+  <form id="patient-login-form" class="auth-card">
+    <h2>Welcome Back!</h2>
+    <p>Already have an account? Log in here.</p>
 
-  <label for="login-password">Password</label>
-  <input id="login-password" type="password" required
-         placeholder="Enter your password">
+    <label for="login-email">Email address</label>
+    <input id="login-email" type="email" required
+           placeholder="Enter your email">
 
-  <button type="submit">Login to Patient Portal</button>
-</form>
+    <label for="login-password">Password</label>
+    <input id="login-password" type="password" required
+           placeholder="Enter your password">
+
+    <button type="submit">Login to Patient Portal</button>
+  </form>
+
+</div>
+
     </section>
 
     <!-- Patient dashboard -->
@@ -81,12 +91,42 @@
         </div>
 
         <button id="logout-button" class="secondary-button">
-          Switch identity
+          Logout
         </button>
       </div>
 
       <div class="dashboard-grid">
 
+<!-- Join Hospital Queue -->
+<section class="card">
+  <p class="eyebrow">HOSPITAL SERVICES</p>
+  <h2>Join Hospital Queue</h2>
+  <p>Select the department you want to visit.</p>
+
+  <form id="patient-queue-form">
+    <label for="queue-department">Choose Department</label>
+    <select id="queue-department" required>
+      <option value="">Select department</option>
+      <option value="General Medicine">General Medicine</option>
+      <option value="Pediatrics">Pediatrics</option>
+      <option value="Cardiology">Cardiology</option>
+      <option value="Orthopedics">Orthopedics</option>
+      <option value="Dermatology">Dermatology</option>
+    </select>
+
+    <button type="submit">Get Queue Token</button>
+  </form>
+  <p id="queue-message" class="notice" aria-live="polite"></p>
+
+<div id="queue-status" class="queue-status" hidden>
+  <h3>Your Queue Status</h3>
+  <p>Token: <strong id="queue-token">-</strong></p>
+  <p>Department: <strong id="queue-department-name">-</strong></p>
+  <p>Status: <strong id="queue-current-status">Waiting</strong></p>
+  <p>Position: <strong id="queue-position">-</strong></p>
+</div>
+
+</section>
         <!-- AI Chat -->
         <section class="card chat-card">
           <div class="card-heading">
@@ -94,7 +134,8 @@
               <p class="eyebrow">INTELLIGENT SUPPORT</p>
               <h2>CareBridge Assistant</h2>
             </div>
-            <span class="status-badge">UI PREVIEW</span>
+            <span class="status-badge">AI ASSISTANT</span>
+
           </div>
 
           <div id="chat-messages" class="chat-messages"
@@ -102,8 +143,8 @@
             <div class="message assistant-message">
               <strong>CareBridge Assistant</strong>
               <p>
-                Welcome! The chat interface is ready.
-                AI services are not connected yet.
+                Welcome to CareBridge! I'm CareBot.
+                Ask me about hospital services, departments, and support.
               </p>
             </div>
           </div>
@@ -121,46 +162,22 @@
             </div>
           </form>
 
-          <p class="notice">
-            Temporary UI preview. No fake AI responses are generated.
+          
           </p>
         </section>
 <!-- Patient memory -->
-<section class="card">
-  <p class="eyebrow">PERSONALISED SUPPORT</p>
-  <h2>Remembered Information</h2>
-  <div class="memory-placeholder">
-    <div class="memory-icon">✧</div>
-    <h3>Conversation Memory</h3>
-    <p id="patient-memory">
-      CareBot uses saved conversation history to remember previous messages.
-    </p>
-    <span class="status-badge">POSTGRESQL</span>
-  </div>
-</section>
+
 
 <!-- Conversation history -->
-<section class="card">
-  <p class="eyebrow">YOUR PAST INTERACTIONS</p>
-  <h2>Conversation History</h2>
-  <div id="conversation-history" class="empty-state">
-    <p>Loading your conversation history...</p>
-  </div>
+<section class="card history-card">
+  <details>
+    <summary>Conversation History</summary>
+    <div id="conversation-history" class="empty-state">
+      <p>Loading your conversation history...</p>
+    </div>
+  </details>
 </section>
-
 <!-- Memory usage -->
-<section class="card">
-  <p class="eyebrow">MEMORY INTELLIGENCE</p>
-  <h2>Personalisation Activity</h2>
-  <div class="memory-placeholder">
-    <div class="memory-icon">◎</div>
-    <h3>Previous support history</h3>
-    <p id="memory-activity">
-      Saved messages are retrieved to provide conversational context.
-    </p>
-    <span class="status-badge">ACTIVE</span>
-  </div>
-</section>
 
       </div>
     </section>

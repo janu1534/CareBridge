@@ -117,4 +117,43 @@ RULES:
   return reply;
 }
 
-module.exports = { askAssistant };
+async function askPublicAssistant(message) {
+  if (!process.env.GROQ_API_KEY) {
+    throw new Error("AI assistant is not configured.");
+  }
+
+  const systemPrompt = `You are CareBridge's public homepage assistant, CareBot.
+
+You help visitors understand hospital services.
+
+Departments:
+- General Medicine
+- Pediatrics
+- Cardiology
+- Orthopedics
+- Dermatology
+
+Rules:
+- Answer general hospital questions.
+- Help visitors choose a department.
+- Explain how to register and get a queue token.
+- Never reveal patient information.
+- Never diagnose or prescribe medicines.
+- For emergencies, advise immediate emergency medical help.
+- Keep responses short, friendly and supportive.
+- Support English and Telugu.`;
+
+  const completion = await groq.chat.completions.create({
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: message }
+    ],
+    model: "openai/gpt-oss-120b",
+    temperature: 0.5,
+    max_tokens: 300
+  });
+
+  return completion.choices[0].message.content;
+}
+
+module.exports = { askAssistant, askPublicAssistant };

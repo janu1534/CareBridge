@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,7 +6,7 @@
   <title>CareBridge | Connected Care</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body class="home-redesign">
 
 <header class="topbar">
   <a class="brand" href="/">
@@ -17,88 +16,121 @@
   <span class="tagline">CONNECTED CARE, LESS WAITING</span>
 </header>
 
-<main class="landing">
+<main class="home-main">
 
-  <section class="robot-section">
-    <div class="robot-glow"></div>
-    <div class="robot-image">
-      <img src="/images/carebot.png"
-           alt="CareBridge friendly medical robot"
-           onerror="this.style.display='none';document.getElementById('robot-fallback').hidden=false">
-      <div id="robot-fallback" hidden>
-        <div class="robot-face">🤖</div>
-        <p>Meet CareBot!</p>
+  <section class="home-hero">
+
+    <!-- Large CareBot Robot -->
+    <div class="hero-robot">
+      <div class="robot-glow"></div>
+      <img
+        src="/images/carebot.png"
+        alt="CareBridge medical robot CareBot"
+        onerror="this.style.display='none'"
+      >
+      <div class="robot-welcome">
+        <span class="online-dot"></span>
+        Hello! I'm CareBot. How can I help you today?
       </div>
     </div>
-    <div class="speech">
-      <span class="online-dot"></span>
-      Hello! I'm CareBot. How can I help you today?
+
+    <!-- Welcome and Portals -->
+    <div class="hero-content">
+
+      <div class="hero-brand">
+        <div class="hero-brand-icon">✚</div>
+        <div>
+          <h1>CareBridge</h1>
+          <p>Connected Care, Less Waiting</p>
+        </div>
+      </div>
+
+      <p class="welcome-label">WELCOME TO CAREBRIDGE</p>
+
+      <h2>Your Hospital Journey,<br>
+        <span>Made Simpler.</span>
+      </h2>
+
+      <p class="hero-description">
+        Smarter healthcare starts here. Choose your portal
+        and let us make your hospital experience easier.
+      </p>
+
+      <div class="portal-grid">
+
+        <a href="/patient.html" class="portal-card patient">
+          <div class="portal-icon">♙</div>
+          <div>
+            <h3>Patient Portal</h3>
+            <p>Register, get your token and track your queue.</p>
+            <span class="portal-link">Continue →</span>
+          </div>
+        </a>
+
+        <a href="/staff.html" class="portal-card staff">
+          <div class="portal-icon">✚</div>
+          <div>
+            <h3>Staff Portal</h3>
+            <p>Manage patients and update live queues.</p>
+            <span class="portal-link">Staff login →</span>
+          </div>
+        </a>
+
+        <a href="/critical-care.html" class="portal-card critical">
+          <div class="portal-icon">♡</div>
+          <div>
+            <h3>Critical Care</h3>
+            <p>Monitor urgency and prioritize patient care.</p>
+            <span class="portal-link">Open portal →</span>
+          </div>
+        </a>
+
+        <a href="/assistant.html" class="portal-card assistant">
+          <div class="portal-icon">✧</div>
+          <div>
+            <h3>AI Assistant</h3>
+            <p>Talk to CareBot for friendly hospital guidance.</p>
+            <span class="portal-link">Meet CareBot →</span>
+          </div>
+        </a>
+
+      </div>
     </div>
-    <p class="robot-caption">YOUR FRIENDLY HEALTHCARE COMPANION</p>
   </section>
 
-  <section class="content">
-    <div class="welcome-label">WELCOME TO CAREBRIDGE</div>
-
-    <h1>Your Hospital Journey,<br>
-      <span>Made Simpler.</span>
-    </h1>
-
-    <p class="intro">
-      Smarter healthcare starts here. Choose your portal
-      and let us make your hospital experience easier.
-    </p>
-
-    <div class="portal-grid">
-
-      <a href="/patient.html" class="portal-card patient">
-        <div class="portal-icon">♙</div>
-        <div>
-          <h2>Patient Portal</h2>
-          <p>Register, get your token and track your queue.</p>
-          <span class="portal-link">Continue →</span>
-        </div>
-      </a>
-
-      <a href="/staff.html" class="portal-card staff">
-        <div class="portal-icon">✚</div>
-        <div>
-          <h2>Staff Portal</h2>
-          <p>Manage patients and update live queues.</p>
-          <span class="portal-link">Staff login →</span>
-        </div>
-      </a>
-
-      <a href="/critical-care.html" class="portal-card critical">
-        <div class="portal-icon">♡</div>
-        <div>
-          <h2>Critical Care</h2>
-          <p>Monitor urgency and prioritize patient care.</p>
-          <span class="portal-link">Open portal →</span>
-        </div>
-      </a>
-
-      <a href="/assistant.html" class="portal-card assistant">
-        <div class="portal-icon">✧</div>
-        <div>
-          <h2>AI Assistant</h2>
-          <p>Talk to CareBot for friendly hospital guidance.</p>
-          <span class="portal-link">Meet CareBot →</span>
-        </div>
-      </a>
-
+  <!-- Homepage AI Chat -->
+  <section class="card homepage-chat">
+    <div class="home-chat-intro">
+      <p class="eyebrow">MEET CAREBOT</p>
+      <h2>Ask CareBot anything</h2>
+      <p>Need help finding a department or understanding hospital services?</p>
     </div>
 
-    <div class="bottom-note">
-      <span>♡</span> Connected care, with compassion.
+    <div class="home-chat-area">
+      <div id="home-chat-messages" aria-live="polite">
+        <p><strong>CareBot:</strong> Hello! I'm here to help you navigate CareBridge.</p>
+      </div>
+
+      <form id="home-chat-form">
+        <input
+          id="home-chat-input"
+          type="text"
+          placeholder="Ask CareBot a question..."
+          maxlength="1000"
+          required
+        >
+        <button type="submit">Send →</button>
+      </form>
     </div>
   </section>
+
 </main>
 
-<footer>
+<footer class="home-footer">
   CareBridge © 2026 · Connected Care, Less Waiting
   <p>Demonstration platform. Not for medical emergencies.</p>
 </footer>
 
+<script src="/home.js" defer></script>
 </body>
 </html>

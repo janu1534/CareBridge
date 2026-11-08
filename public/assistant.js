@@ -18,50 +18,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Load previous conversation
+
 async function loadHistory() {
   try {
-const response = await fetch("/api/assistant/history");
-if (response.status === 401) return;
+    const response = await fetch("/api/assistant/history");
+
+    if (response.status === 401) return;
+
     const data = await response.json();
 
     if (!response.ok || !data.history) return;
 
-    chatMessages.innerHTML = "";
-
     const historyBox = document.getElementById("conversation-history");
-    const memoryBox = document.getElementById("patient-memory");
-    const activityBox = document.getElementById("memory-activity");
+
+    if (!historyBox) return;
 
     historyBox.innerHTML = "";
 
     if (data.history.length === 0) {
       historyBox.textContent = "No previous conversations yet.";
-      memoryBox.textContent = "CareBot will remember messages from this browser session.";
-      activityBox.textContent = "No saved messages yet.";
       return;
     }
 
     data.history.forEach(item => {
-      addMessage(item.role, item.content);
-
       const entry = document.createElement("p");
+
       entry.textContent =
         (item.role === "user" ? "You: " : "CareBot: ") + item.content;
 
       historyBox.appendChild(entry);
     });
 
-    memoryBox.textContent =
-      `${data.history.length} saved messages available for conversation context.`;
-
-
-    activityBox.textContent =
-      "Previous messages successfully retrieved from PostgreSQL.";
-
   } catch (error) {
     console.error("Could not load chat history:", error);
   }
 }
+
   // Send a new message
   chatForm.addEventListener("submit", async (event) => {
     event.preventDefault();

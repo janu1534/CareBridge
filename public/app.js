@@ -209,6 +209,12 @@ function getDepartmentColor(department) {
                 Complete
               </button>
             </div>
+                          ${patient.status === "completed" ? `
+                <button class="danger"
+                  data-delete-id="${escapeHTML(patient.id)}">
+                  Delete
+                </button>
+              ` : ""}
           </article>
         `).join("")
       : "<p class='muted'>No patients match your search.</p>";
@@ -323,9 +329,33 @@ function getDepartmentColor(department) {
     });
   }
 
-  // STAFF QUEUE STATUS ACTIONS
+    // STAFF QUEUE STATUS AND DELETE ACTIONS
   if (staffBox) {
     staffBox.addEventListener("click", async event => {
+      const deleteButton = event.target.closest("button[data-delete-id]");
+
+      if (deleteButton) {
+        if (!confirm("Permanently delete this completed patient record?")) {
+          return;
+        }
+
+        deleteButton.disabled = true;
+
+        try {
+          await api(
+            `/api/staff/queue/${encodeURIComponent(deleteButton.dataset.deleteId)}`,
+            { method: "DELETE" }
+          );
+
+          await refreshStaff();
+        } catch (error) {
+          alert(error.message);
+          deleteButton.disabled = false;
+        }
+
+        return;
+      }
+
       const button = event.target.closest("button[data-id]");
       if (!button || button.disabled) return;
 
@@ -336,21 +366,17 @@ function getDepartmentColor(department) {
           `/api/staff/queue/${encodeURIComponent(button.dataset.id)}`,
           {
             method: "PATCH",
-            body: JSON.stringify({
-              status: button.dataset.status
-            })
+            body: JSON.stringify({ status: button.dataset.status })
           }
         );
 
         await refreshStaff();
-
       } catch (error) {
         alert(error.message);
         button.disabled = false;
       }
     });
   }
-
   // STAFF LOGOUT
   const logoutButton = document.getElementById("logout-button");
 

@@ -405,3 +405,279 @@ footer p {
     width: 100%;
   }
 }
+/* COMPACT PATIENT PORTAL */
+
+.history-card details summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--primary-dark);
+  padding: 8px 0;
+}
+
+.history-card details[open] summary {
+  margin-bottom: 15px;
+}
+
+.history-card .empty-state {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.dashboard-grid {
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+}
+
+.chat-card {
+  min-height: auto;
+}
+
+@media (max-width: 750px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-home {
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-home:hover {
+  text-decoration: underline;
+}
+
+/* CAREBRIDGE COMPACT PATIENT DASHBOARD */
+.patient-page {
+  padding-top: 12px;
+  padding-bottom: 15px;
+}
+
+.patient-header {
+  margin-bottom: 10px;
+}
+
+.patient-header .logo {
+  font-size: 23px;
+}
+
+.welcome-row {
+  margin: 10px 0 14px;
+}
+
+.welcome-row h1 {
+  font-size: clamp(23px, 3vw, 29px);
+  margin: 4px 0;
+}
+
+.dashboard-grid {
+  gap: 12px;
+}
+
+.card {
+  padding: 16px;
+  border-radius: 15px;
+}
+
+.card h2 {
+  font-size: 19px;
+  margin: 5px 0 10px;
+}
+
+.card p {
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.chat-card {
+  min-height: 0;
+}
+
+.chat-messages {
+  min-height: 180px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.chat-input-row {
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.history-card details[open] summary {
+  margin-bottom: 8px;
+}
+
+.history-card .empty-state {
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+#patient-queue-form {
+  gap: 8px;
+}
+
+@media(max-width: 750px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .chat-messages {
+    max-height: 220px;
+  }
+}
+
+/* SIDE-BY-SIDE PATIENT LOGIN AND REGISTRATION */
+.auth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1000px;
+  margin: 25px auto;
+  align-items: stretch;
+}
+
+.auth-card {
+  background: #ffffff;
+  padding: 25px;
+  border: 1px solid #dceae5;
+  border-radius: 18px;
+  box-shadow: 0 6px 22px rgba(20, 80, 65, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-card h2 {
+  color: var(--primary-dark);
+  margin: 0 0 5px;
+}
+
+.auth-card p {
+  color: #71827b;
+  margin: 0 0 10px;
+}
+
+.auth-card label {
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d6e4df;
+  border-radius: 9px;
+}
+
+.auth-card button {
+  margin-top: 12px;
+  padding: 12px;
+}
+
+@media (max-width: 650px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+/* ULTRA COMPACT PATIENT AUTH PAGE */
+.auth-grid {
+  max-width: 850px;
+  gap: 14px;
+  margin: 10px auto;
+}
+
+.auth-card {
+  padding: 15px 18px;
+  gap: 5px;
+  border-radius: 14px;
+}
+
+.auth-card h2 {
+  font-size: 19px;
+  margin-bottom: 2px;
+}
+
+.auth-card p {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.auth-card label {
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.auth-card input {
+  padding: 9px 11px;
+  font-size: 13px;
+}
+
+.auth-card button {
+  padding: 9px 12px;
+  margin-top: 7px;
+}
+
+.patient-header {
+  margin-bottom: 5px;
+}
+
+@media (min-width: 651px) {
+  .auth-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* WIDE PATIENT AUTH LAYOUT */
+.auth-grid {
+  width: 96%;
+  max-width: 1450px;
+  margin: 8px auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 28px;
+}
+
+.auth-card input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.patient-page {
+  width: 98%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 650px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+    width: 94%;
+  }
+}
