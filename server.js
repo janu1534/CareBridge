@@ -29,6 +29,10 @@ app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname,"public")));
 const loginLimiter = rateLimit({ windowMs: 900000, limit: 10, standardHeaders: "draft-7", legacyHeaders: false });
 const requireStaff = (req,res,next) => req.session?.staff ? next() : res.status(401).json({error:"Staff login required."});
+const requirePatient = (req, res, next) =>
+  req.session?.patient
+    ? next()
+    : res.status(401).json({ error: "Patient login required." });
 const requireClinician = (req, res, next) => {
   if (!req.session?.staff) {
     return res.status(401).json({ error: "Staff login required." });
@@ -53,6 +57,15 @@ function publicRows(rows) {
 }
 async function publish() { io.emit("queue:update",publicRows(await queueRows())); }
 async function init() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS patients (
+      id BIGSERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    );
+  `);
   await pool.query(`CREATE TABLE IF NOT EXISTS staff_users (
     id BIGSERIAL PRIMARY KEY,email TEXT UNIQUE NOT NULL,password_hash TEXT NOT NULL,
     role TEXT NOT NULL CHECK(role IN ('admin','receptionist','doctor')),created_at TIMESTAMPTZ DEFAULT NOW());
@@ -83,15 +96,105 @@ await pool.query(`
 }
 
 app.get("/api/health",(req,res)=>res.json({ok:true,service:"CareBridge API"}));
-app.get("/api/assistant/history", async (req, res, next) => {
+// Patient registration
+app.post("/api/patient/register", loginLimiter, async (req, res, next) => {
   try {
-    const patientId = req.query.patientId;
+    const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
+    const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
+    const password = typeof req.body.password === "string" ? req.body.password : "";
 
-    if (!["demo-patient-1", "demo-patient-2"].includes(patientId)) {
-      return res.status(400).json({ error: "Invalid demo patient." });
-    }
+    if (name.length < 2 || name.length > 80)
+      return res.status(400).json({ error: "Name must be 2–80 characters." });
 
-    const sessionId = `${req.sessionID}:${patientId}`;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return res.status(400).json({ error: "Enter a valid email address." });
+
+    if (password.length < 8 || Buffer.byteLength(password, "utf8") > 72)
+      return res.status(400).json({ error: "Password must be at least 8 characters and no more than 72 bytes." });
+
+    const hash = await bcrypt.hash(password, 12);
+
+    const result = await pool.query(
+      `INSERT INTO patients(name, email, password_hash)
+       VALUES($1, $2, $3)
+       RETURNING id, name, email`,
+      [name, email, hash]
+    );
+
+    const patient = result.rows[0];
+
+    req.session.regenerate(err => {
+      if (err) return next(err);
+
+      req.session.patient = {
+        id: patient.id,
+        name: patient.name,
+        email: patient.email
+      };
+
+      req.session.save(err2 => {
+        if (err2) return next(err2);
+        res.status(201).json({ patient });
+      });
+    });
+  } catch (error) {
+    if (error.code === "23505")
+      return res.status(409).json({ error: "An account with this email already exists." });
+    next(error);
+  }
+});
+
+// Patient login
+app.post("/api/patient/login", loginLimiter, async (req, res, next) => {
+  try {
+    const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
+    const password = typeof req.body.password === "string" ? req.body.password : "";
+
+    const result = await pool.query(
+      "SELECT id, name, email, password_hash FROM patients WHERE email = $1",
+      [email]
+    );
+
+    const patient = result.rows[0];
+
+    if (!patient || !(await bcrypt.compare(password, patient.password_hash)))
+      return res.status(401).json({ error: "Email or password is incorrect." });
+
+    req.session.regenerate(err => {
+      if (err) return next(err);
+
+      req.session.patient = {
+        id: patient.id,
+        name: patient.name,
+        email: patient.email
+      };
+
+      req.session.save(err2 => {
+        if (err2) return next(err2);
+        res.json({ patient: req.session.patient });
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Check current patient session
+app.get("/api/patient/me", (req, res) => {
+  res.json({ patient: req.session?.patient || null });
+});
+
+// Patient logout
+app.post("/api/patient/logout", requirePatient, (req, res, next) => {
+  req.session.destroy(error => {
+    if (error) return next(error);
+    res.clearCookie("carebridge.sid");
+    res.json({ ok: true });
+  });
+});
+app.get("/api/assistant/history", requirePatient, async (req, res, next) => {
+  try {
+    const sessionId = `patient:${req.session.patient.id}`;
 
     const result = await pool.query(
       `SELECT role, content, created_at
@@ -205,8 +308,7 @@ const aiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 });
-
-app.post("/api/assistant", aiLimiter, async (req, res, next) => {
+app.post("/api/assistant", requirePatient, aiLimiter, async (req, res, next) => {
   try {
     const message = typeof req.body.message === "string"
       ? req.body.message.trim()
@@ -219,16 +321,9 @@ app.post("/api/assistant", aiLimiter, async (req, res, next) => {
     }
     req.session.chatStarted = true;
 
-    // Identify this browser session
-const patientId = req.body.patientId;
-
-if (!["demo-patient-1", "demo-patient-2"].includes(patientId)) {
-  return res.status(400).json({
-    error: "Invalid demo patient."
-  });
-}
-
-const sessionId = `${req.sessionID}:${patientId}`;
+// Identify the authenticated patient
+const patientId = String(req.session.patient.id);
+const sessionId = `patient:${patientId}`;
     // Save the patient's message
     await pool.query(
       `INSERT INTO chat_messages (session_id, role, content)

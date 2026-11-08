@@ -20,13 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load previous conversation
 async function loadHistory() {
   try {
-const patientId = sessionStorage.getItem("carebridgePatientId");
-
-if (!patientId) return;
-
-const response = await fetch(
-  `/api/assistant/history?patientId=${encodeURIComponent(patientId)}`
-);
+const response = await fetch("/api/assistant/history");
+if (response.status === 401) return;
     const data = await response.json();
 
     if (!response.ok || !data.history) return;
@@ -90,10 +85,7 @@ const response = await fetch(
         headers: {
           "Content-Type": "application/json"
         },
-body: JSON.stringify({
-  message,
-  patientId: sessionStorage.getItem("carebridgePatientId")
-})
+body: JSON.stringify({ message })
       });
 
       const data = await response.json();

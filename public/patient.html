@@ -31,21 +31,41 @@
         and access your support history.
       </p>
 
-      <form id="patient-login-form">
-        <label for="patient-select">Choose a demo patient identity</label>
-        <select id="patient-select" required>
-          <option value="">Select a demo identity</option>
-          <option value="demo-patient-1">Demo Patient 1</option>
-          <option value="demo-patient-2">Demo Patient 2</option>
-        </select>
+<div id="auth-message" class="notice" aria-live="polite"></div>
 
-        <p class="notice">
-          Development demo only. This selection does not authenticate
-          a real patient or retrieve medical records.
-        </p>
+<form id="patient-register-form">
+  <h2>Create Patient Account</h2>
 
-        <button type="submit">Enter Patient Portal</button>
-      </form>
+  <label for="register-name">Full name</label>
+  <input id="register-name" type="text" required minlength="2"
+         maxlength="80" placeholder="Enter your name">
+
+  <label for="register-email">Email address</label>
+  <input id="register-email" type="email" required
+         placeholder="Enter your email">
+
+  <label for="register-password">Password</label>
+  <input id="register-password" type="password" required
+         minlength="8" placeholder="At least 8 characters">
+
+  <button type="submit">Create Account</button>
+</form>
+
+<hr>
+
+<form id="patient-login-form">
+  <h2>Already Registered? Login</h2>
+
+  <label for="login-email">Email address</label>
+  <input id="login-email" type="email" required
+         placeholder="Enter your email">
+
+  <label for="login-password">Password</label>
+  <input id="login-password" type="password" required
+         placeholder="Enter your password">
+
+  <button type="submit">Login to Patient Portal</button>
+</form>
     </section>
 
     <!-- Patient dashboard -->

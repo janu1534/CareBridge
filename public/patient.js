@@ -4,46 +4,106 @@
  * Frontend-only demonstration.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const loginForm = document.getElementById("patient-login-form");
+  const registerForm = document.getElementById("patient-register-form");
   const loginSection = document.getElementById("login-section");
   const dashboard = document.getElementById("dashboard");
-  const patientSelect = document.getElementById("patient-select");
   const patientName = document.getElementById("patient-name");
   const logoutButton = document.getElementById("logout-button");
+  const authMessage = document.getElementById("auth-message");
 
-  const demoPatients = {
-    "demo-patient-1": "Demo Patient 1",
-    "demo-patient-2": "Demo Patient 2"
-  };
+  function showMessage(message, isError = true) {
+    authMessage.textContent = message;
+    authMessage.style.color = isError ? "#b42318" : "#26734d";
+  }
 
-  loginForm.addEventListener("submit", (event) => {
+  function enterPortal(patient) {
+    patientName.textContent = patient.name;
+    loginSection.hidden = true;
+    dashboard.hidden = false;
+    window.dispatchEvent(new Event("patientIdentityChanged"));
+  }
+
+  async function sendAuth(url, data) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Authentication failed.");
+    }
+
+    return result.patient;
+  }
+
+  registerForm.addEventListener("submit", async event => {
     event.preventDefault();
 
-    const selectedPatient = patientSelect.value;
-    const displayName = demoPatients[selectedPatient];
+    try {
+      const patient = await sendAuth("/api/patient/register", {
+        name: document.getElementById("register-name").value,
+        email: document.getElementById("register-email").value,
+        password: document.getElementById("register-password").value
+      });
 
-    if (!displayName) {
-      alert("Please select a demo patient.");
-      return;
+      showMessage("Account created successfully!", false);
+      registerForm.reset();
+      enterPortal(patient);
+    } catch (error) {
+      showMessage(error.message);
     }
-sessionStorage.setItem("carebridgePatientId", selectedPatient);
-
-patientName.textContent = displayName;
-loginSection.hidden = true;
-dashboard.hidden = false;
-
-window.dispatchEvent(new Event("patientIdentityChanged"));
-
   });
 
-  logoutButton.addEventListener("click", () => {
-sessionStorage.removeItem("carebridgePatientId");  
-  dashboard.hidden = true;
-    loginSection.hidden = false;
-    loginForm.reset();
-    patientName.textContent = "Patient";
+  loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    try {
+      const patient = await sendAuth("/api/patient/login", {
+        email: document.getElementById("login-email").value,
+        password: document.getElementById("login-password").value
+      });
+
+      showMessage("Login successful!", false);
+      loginForm.reset();
+      enterPortal(patient);
+    } catch (error) {
+      showMessage(error.message);
+    }
   });
 
-  console.log("CareBridge patient portal loaded successfully.");
+  logoutButton.addEventListener("click", async () => {
+    try {
+      const response = await fetch("/api/patient/logout", {
+        method: "POST"
+      });
+
+      if (!response.ok) throw new Error("Logout failed.");
+
+      dashboard.hidden = true;
+      loginSection.hidden = false;
+      patientName.textContent = "Patient";
+      showMessage("You have logged out successfully.", false);
+      window.dispatchEvent(new Event("patientIdentityChanged"));
+    } catch (error) {
+      showMessage(error.message);
+    }
+  });
+
+  try {
+    const response = await fetch("/api/patient/me");
+    const data = await response.json();
+
+    if (data.patient) {
+      enterPortal(data.patient);
+    }
+  } catch (error) {
+    console.error("Could not check patient session:", error);
+  }
+
+  console.log("CareBridge patient portal loaded.");
 });

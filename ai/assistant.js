@@ -10,11 +10,10 @@ const hindsight = new HindsightClient({
   apiKey: process.env.HINDSIGHT_API_KEY
 });
 
-const BANKS = {
-  "demo-patient-1": "carebridge-demo-patient-1",
-  "demo-patient-2": "carebridge-demo-patient-2"
-};
-
+function getPatientBank(patientId) {
+  if (!/^\d+$/.test(String(patientId))) return null;
+  return `carebridge-patient-${patientId}`;
+}
 // Avoid retaining conversations containing potentially sensitive medical details.
 function isSafeForDemoMemory(message) {
   const sensitiveTerms =
@@ -30,7 +29,7 @@ async function askAssistant(message, queueData = [], history = [], patientId) {
     throw new Error("AI assistant is not configured.");
   }
 
-  const bankId = BANKS[patientId];
+const bankId = getPatientBank(patientId);
   let memoryContext = "";
 
   // Recall patient-specific memories.
